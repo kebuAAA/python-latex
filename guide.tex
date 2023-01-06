@@ -1,0 +1,148 @@
+\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{threeparttable}
+\usepackage{cite}
+\usepackage{listings}
+\title{latex使用指南}
+\newcommand{\cnabstractname}{摘要}
+\newenvironment{cnabstract}{%
+  \par\small
+%   \noindent\mbox{}\hfill{\bfseries \cnabstractname}\hfill\mbox{}\par
+  \vskip 2.5ex}{\par\vskip 2.5ex}
+
+\begin{document}
+\maketitle
+\begin{cnabstract}
+  \textbf{摘要: }
+  对latex中高频使用的语法进行记录
+  \par\textbf{关键字: } %网络爬虫\quad 多元线性回归模型\quad 回归模型的检验
+  %“\par在段首，表示另起一行，“\textbf{}”,花括号内的内容加粗显示
+\end{cnabstract}
+\tableofcontents
+\newpage
+\section{插入pdf}
+\verb|include|和\verb|input|命令皆可，记得导入pdfpages宏包。
+% \includepdf{../asset/cover.pdf}
+\section{浮动体环境}
+一般来说，为了排版的美观，都会将表格图片等内容放入浮动体环境，这块主要是针对插入的图片或者表格过大的情况作说明。
+\subsection{插入图片}
+图片过大的问题相对容易解决，只需要直接在修改\verb|width|的可选参数即可
+引用图片\ref{sum_production}
+\begin{figure}[H]%H定义浮动体位置,Here
+  \small
+  \centering
+  \includegraphics[width=\textwidth]{../asset/figure.eps}
+  \caption{全国煤炭企业前50强产煤总量}\label{sum_production}
+\end{figure}
+\subsection{插入表格}
+一般来插入的表格都可以通过python的\verb|DataFrame.to_latex()|函数来导出到指定位置，然后通过\verb|input|命令导入使用，经常会用到的导出模板为:
+\begin{lstlisting}[language=python]
+df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',label='table',header=False)
+\end{lstlisting}
+只需微调函数的参数即可，注意如下:
+\begin{itemize}
+  \item 列名如果有数学公式的话导出会加转义符，这样在latex编译后不能正常显示。可以设置\verb|escape=False|解决这个问题，不过这样设置数值中的转义符号也会被取消掉，这点在对于数值列中含有"\%"的数据中需要注意
+  \item 不想显示index列或者列名列可以通过调节\verb|index|和\verb|header|参数进行修改
+\end{itemize}
+
+插入表格的情况，相对复杂，可能出现的问题包括引入的表格过宽和过长的问题。
+一个简单的例子如表\ref{tab:table1}:
+{\input{tex代码/table.tex}}
+\subsubsection{宽表格}
+针对插入表格\textbf{过宽}的情况
+\begin{enumerate}
+  \item 一般选择使用\verb|graphicx|宏包提供的\verb|\resizebox{h-length%l}{v-length%l}{text}|命令来解决。这里给一个示例，语法如表\ref{cr8table}所示（代码在\verb|tex代码|文件夹的\verb|widetable|里边。
+        {
+        \input{./tex代码/wide_table.tex}
+        }
+  \item 除了缩小表格内容以外，对于宽度溢出不太严重的表格，也可以选择修改水平排版开始位置，这也能使得本来溢出的表格可以被放下，而且也不会导致字体看起来太小（示例如表\ref{cr8.1}所示）
+        {
+        \input{./tex代码/little_wide_table.tex}
+        }
+\end{enumerate}
+\subsubsection{长表格}
+长表格主要使用的是\verb|longtable|宏包的longtable环境，与tabular类似，不过多了一些处理跨页操作的命令。因为\verb|to_latex|函数可以直接导出这种样式的表格，所以在实际中使用这种表格的频率也比较高,想要导出这种环境的表格时，只需在开始提到的模板中加入\verb|longtable=True|的参数即可获得，使用比较方便\footnote{longtable的表格宽度是根据表格内容调整的，当表格属于长而窄的类型时美观度比较有限，这时可以考虑利用python的concat函数对长表格进行拆分和列拼接}。\par
+{
+  \input{./tex代码/long_table.tex}
+}
+\subsubsection{定宽表格}
+刘海洋老师的书里有写到，可以去翻翻。用的是\verb|tabularx|环境。
+考虑到这种环境不能使用Python的\verb|to_latex|直接导出，更推荐的一种做法是在python中将表格进行调整之后再导出。
+\section{插入题注}
+这是一个题注\footnote{使用比较简单，这里不再赘述}。
+\section{导入参考文献}
+参考文献的导入主要是使用zotero先导出bib文件。引文格式可能需要根据不同的使用场景进行调整。
+
+对于中文文献，可以使用\verb|gbt7714|宏包来生成满足我国标准的参考文献格式:
+\begin{verbatim}
+\documentclass{ctexart}
+\usepackage{gbt7714}
+\bibliographystyle{gbt7714-numerical}
+\begin{document}
+\cite{...}
+...
+\bibliography{bibfile}
+\end{document}
+\end{verbatim}\par
+按照国标的规定，参考文献的标注体系分为“顺序编码制”和“著者-出版年制”。用
+户应在导言区调用宏包 gbt7714，并且使用 \verb|\bibliographystyle| 命令选择参考文献
+表的样式，比如：
+\begin{verbatim}
+\bibliographystyle{gbt7714-numerical} %顺序编码制
+或者
+\bibliographystyle{gbt7714-author-year} %著者-出版年制
+\end{verbatim}
+此外还可以使用 2005 版的格式 gbt7714-2005-numerical 和 gbt7714-2005-author-year。
+另外几点注意：
+\begin{itemize}
+  \item 可以通过\verb|\citestyle{⟨citation style⟩}|命令来改变引用位置的显示格式，可选参数为super, numbers, author-year,在顺序编码制下默认引用格式为上角标（sub）.
+  \item 同一位置引用多篇文献时，如果想要在引用位置自动对文献进行排序则需要将\verb|sort&compress|传递给宏包的可选参数
+        \begin{verbatim}
+    \usepackage[sort&compress]{gbt7714}
+  \end{verbatim}
+\end{itemize}
+
+\textbf{注意该宏包不要和cite宏包一同引入，会起冲突}。\par
+
+\LaTeX 中更为常用的一种导入参考文献的格式，其中\verb|unsrt|样式表示参考文献条目按照文章中出现顺序排列。
+%参考文献
+\begin{verbatim}
+\bibliographystyle{unsrt}
+\bibliography{ref}
+\end{verbatim}
+该方法下在引用位置处显示是类似"[4]"的形式。
+\newpage
+%附录
+\begin{appendices}
+  \section{插入代码}
+  \begin{lstlisting}[language=r]
+data<-read.csv('./data.csv')
+names(data)
+# model<-lm(log(单价)~.-所属区-朝向-小区,data)
+shapiro.test(log(data$单价))
+shapiro.test(data$单价)
+model <- lm(log(单价) ~ ., data)
+summary(model)
+sel_model <- step(model)
+summary(sel_model)
+# 多重共线性
+library(car)
+library(lmtest)
+resettest(sel_model, power = 2)
+library(lmtest)
+bgtest(sel_model)
+bptest(model)
+library("ivreg")
+model <- ivreg(log(单价) ~ 容积率 + 总楼栋数 + 房龄 + 客厅数 + 卫生间数 + 总楼层+绿化率 + 小区参考均价 | 容积率 + 总楼栋数 + 房龄 + 客厅数 + 卫生间数 +  总楼层+绿化率 + 交易价值 + 居住品质, data = data)
+summary(model)
+\end{lstlisting}
+  \subsection{input方法}
+  更为简洁的一种导入方法
+  \lstinputlisting[language=python]{./test.py}
+\end{appendices}
+\end{document}

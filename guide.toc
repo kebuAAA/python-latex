@@ -1,0 +1,12 @@
+\contentsline {section}{\numberline {一、}插入pdf}{2}{section.1}%
+\contentsline {section}{\numberline {二、}浮动体环境}{2}{section.2}%
+\contentsline {subsection}{\numberline {2\,.\,1}插入图片}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2\,.\,2}插入表格}{2}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2\,.\,2\,.\,1}宽表格}{3}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2\,.\,2\,.\,2}长表格}{4}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2\,.\,2\,.\,3}定宽表格}{5}{subsubsection.2.2.3}%
+\contentsline {section}{\numberline {三、}插入题注}{5}{section.3}%
+\contentsline {section}{\numberline {四、}导入参考文献}{5}{section.4}%
+\contentsline {section}{附录 \numberline {A}插入代码}{7}{appendix.a.A}%
+\contentsline {subsection}{\numberline {1\,.\,1}input方法}{7}{subsection.a.A.1}%
+\contentsfinish 
