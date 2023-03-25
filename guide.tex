@@ -3,6 +3,7 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{pdfpages}
+\usepackage{subcaption}
 \usepackage{float}
 \usepackage{longtable}
 \usepackage{threeparttable}
@@ -25,19 +26,45 @@
 \end{cnabstract}
 \tableofcontents
 \newpage
-\section{插入pdf}
-\verb|include|和\verb|input|命令皆可，记得导入pdfpages宏包。
+\section{文档结构组织}
+\subsection{input vs. include}
+文档结构组织主要是在应对需要编译的latex文档过长时需要面临的问题,这里结合文档较长时存在的问题来分析\verb|\input|和\verb|\include|命令:
+\begin{itemize}
+  \item 文档较长时，tex代码较长，文本编辑器的功能会大打折扣。这时很自然地想要将文档拆分成多个tex文件，在编译时同时引入，这时就可以使用\verb|\input{文件名}|命令，扩展名(.tex)可省略，\textbf{支持嵌套}
+  \item 文档较长，当进行细微调整时编译时间较长，这时可以考虑结合使用\verb|\includeonly{文件列表}|\\和 \verb|\include{文件名}|命令\footnote{includeonly是导言区命令，如单独使用include，相当于input命令，不过会在插入tex代码前后都有换页符}，这么做的好处是能提高速度——对于只存在于文件列表内的文件，latex只会加载其对应的章节标题等信息，并不会将文档内容引入，这能保证对单个文档进行修改时仍能保持和整体文档一致的效果，大大提高了编译速度，不过需要注意的是\verb|\include{}|命令\textbf{不可以嵌套使用}
+\end{itemize}
+\subsection{插入pdf}
+latex插入pdf时的两种常用方法及其优缺点表述如下:
+\begin{itemize}
+  \item $graphicx$是对$graphics$宏包的扩展或者增强，两个宏包的参数格式有细微差别，后者更多是对前者的补充。因为可以将pdf使用\verb|\includegraphics|引入，所以可以将其放置在浮动体或者直接插入到文档中，其相当于将pdf当做源文件的一部分插入在文档中，对其进行修改或者加以说明都会更方便一些，就个人体验而言更实用一些。
+  \item $pdfpages$提供了很多选项来插入PDF文件,其在文档中写到避免产生类似$graphicx$插入pdf‘Overfull \verb|\hbox|’ and ‘Overfull \verb|\vbox|’ warnings的提示。自己在使用过程中的体验是该宏包适合用来pdf作为一个\textbf{独立的页面}插入到源文档中的情况，提供了丰富的命令对插入pdf的大小和原页面的大小进行调整，但是如果想对插入的pdf进行局部的调整或者加一个标题之类的操作，相对来说明比较麻烦且排版效果也比较差。
+\end{itemize}
+如想将导入的pdf双栏排列，建议使用$graphicx$宏包，双栏排列方法见小节:\nameref{双栏}
 % \includepdf{../asset/cover.pdf}
 \section{浮动体环境}
 一般来说，为了排版的美观，都会将表格图片等内容放入浮动体环境，这块主要是针对插入的图片或者表格过大的情况作说明。
 \subsection{插入图片}
-图片过大的问题相对容易解决，只需要直接在修改\verb|width|的可选参数即可
-引用图片\ref{sum_production}
+图片过大的问题相对容易解决，只需要直接在修改\verb|width|的可选参数即可,引用图片\ref{sum_production}
 \begin{figure}[H]%H定义浮动体位置,Here
   \small
   \centering
   \includegraphics[width=\textwidth]{../asset/figure.eps}
   \caption{全国煤炭企业前50强产煤总量}\label{sum_production}
+\end{figure}
+\subsection{双栏排列}\label{双栏}
+在引入pdf或者图片时(insert graphics)，为节省页面空间，很多时候将两张图片进行双栏并排显示是一种不错的选择，这也就使用到了浮动体的双栏,这里给出一种比较简单的浮动体双栏排列的方法：
+% \usepackage{subcaption}浮动体双栏显示
+\begin{figure}[H]
+  \caption{两个图并排放置}\label{sub_cap}
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../asset/figure.eps}
+    \caption{题注1}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \includegraphics[width=\textwidth]{../asset/figure.eps}
+    \caption{题注2}
+  \end{subfigure}
 \end{figure}
 \subsection{插入表格}
 一般来插入的表格都可以通过python的\verb|DataFrame.to_latex()|函数来导出到指定位置，然后通过\verb|input|命令导入使用，经常会用到的导出模板为:
@@ -58,11 +85,11 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 \begin{enumerate}
   \item 一般选择使用\verb|graphicx|宏包提供的\verb|\resizebox{h-length%l}{v-length%l}{text}|命令来解决。这里给一个示例，语法如表\ref{cr8table}所示（代码在\verb|tex代码|文件夹的\verb|widetable|里边。
         {
-        \input{./tex代码/wide_table.tex}
+        \input{./tex代码/wide_table}
         }
   \item 除了缩小表格内容以外，对于宽度溢出不太严重的表格，也可以选择修改水平排版开始位置，这也能使得本来溢出的表格可以被放下，而且也不会导致字体看起来太小（示例如表\ref{cr8.1}所示）
         {
-        \input{./tex代码/little_wide_table.tex}
+        \input{./tex代码/little_wide_table}
         }
 \end{enumerate}
 \subsubsection{长表格}
@@ -73,6 +100,7 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 \subsubsection{定宽表格}
 刘海洋老师的书里有写到，可以去翻翻。用的是\verb|tabularx|环境。
 考虑到这种环境不能使用Python的\verb|to_latex|直接导出，更推荐的一种做法是在python中将表格进行调整之后再导出。
+
 \section{插入题注}
 这是一个题注\footnote{使用比较简单，这里不再赘述}。
 \section{导入参考文献}
