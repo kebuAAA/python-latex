@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.4)  25 MAR 2023 15:16
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.9.4)  25 MAR 2023 15:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1192,91 +1192,4 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12.045> not available
  [5])
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 100.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 100.
-
-[6]
-
-LaTeX Warning: Characters dropped after `\end{verbatim}' on input line 119.
-
-Missing character: There is no ⟨ (U+27E8) in font [lmmono12-regular]:!
-Missing character: There is no ⟩ (U+27E9) in font [lmmono12-regular]:!
-
-Overfull \hbox (58.00694pt too wide) in paragraph at lines 132--133
-[]\TU/SimSun(0)/m/n/12.05 同 一 位 置 引 用 多 篇 文 献 时，|  如 果 想 要 在 引 用 位 置 自 动 对 文 献 进 行 排 序 则 需 要 将[][]\TU/lmtt/m/n/12.05 sort&compress[]\TU/SimSun(0)/m/n/12.05 传
- []
-
-[7] [8] (c:/texlive/2022/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2020/03/24 1.8d listings language file
-) (c:/texlive/2022/texmf-dist/tex/latex/listings/lstlang2.sty
-File: lstlang2.sty 2020/03/24 1.8d listings language file
-) (c:/texlive/2022/texmf-dist/tex/latex/listings/lstlang3.sty
-File: lstlang3.sty 2020/03/24 1.8d listings language file
-)
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 172.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 172.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 172.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 2.00876pt
-(hyperref)                removed on input line 172.
-
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 174.
-(./test.py) [9] (./guide.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
-Package rerunfilecheck Info: File `guide.out' has not changed.
-(rerunfilecheck)             Checksum: 2775E7F1BB3D897D2280A292067CA590;1666.
- ) 
-Here is how much of TeX's memory you used:
- 22759 strings out of 476179
- 454741 string characters out of 5813073
- 980354 words of memory out of 5000000
- 43041 multiletter control sequences out of 15000+600000
- 490848 words of font info for 179 fonts, out of 8000000 for 9000
- 1348 hyphenation exceptions out of 8191
- 104i,11n,111p,387b,1826s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-Output written on guide.pdf (9 pages).
+(hy
