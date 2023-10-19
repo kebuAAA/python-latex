@@ -22,3 +22,5 @@ Maybe many methods in [guide pdf](guide.pdf) are not the best way in the latex w
 随着信息呈现形式的多样化，传统的图和表已经不是结果呈现的最好方式。就Python而言，notebook或许才是更好的选择，但就像上边提到的，notebook的`cell`组织形式决定了其永远不可能替代$\LaTeX$完成论文排版。但是作为定位科研工作者的R语言，似乎为这一问题提供了一个更好的解决方案，之前谢益辉大佬也曾将R Markdown和notebook对比，不得不承认R Markdown可能才是能将上述流程自动化的最佳工具(统计之都最近就在知乎发文提出了使用R Markdown代替$\LaTeX$完成幻灯片展示，见下图)
 ![Alt text](asset/rmd.png)
 技术的迭代更新需要时间，$\LaTeX$目前依然是我排版课程论文的最佳选择，这里只是想为提高排版效率提供一些自己的建议
+# WebLaTex
+[WebLaTex](https://github.com/sanjib-sen/WebLaTex):a tool for compiling tex files online, better choice than overleaf
