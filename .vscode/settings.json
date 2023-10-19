@@ -29,7 +29,7 @@
 		"*.run.xml" // Added Manually
 	],
 	// Edit the following property to change export directory
-	"latex-workshop.latex.outDir": "./PDF",
+	// "latex-workshop.latex.outDir": "./PDF",
 	"latex-workshop.latex.autoClean.run": "onBuilt",
 	"latex-workshop.latex.build.forceRecipeUsage": false,
 	"latex-workshop.synctex.afterBuild.enabled": true,
