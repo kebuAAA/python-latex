@@ -105,7 +105,20 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 这是一个题注\footnote{使用比较简单，这里不再赘述}。
 \section{导入参考文献}
 参考文献的导入主要是使用zotero先导出bib文件。引文格式可能需要根据不同的使用场景进行调整。
-
+\subsection{biblatex宏包}
+\verb|biblatex|宏包提供了比较全面的中文参考文献导入支持，需要注意的是在编译bib文件时默认使用\verb|biber|后端，同时在生成和导入参考文献时与其它宏包有所区别:
+\begin{verbatim}
+\documentclass{ctexart}
+% 使用符合 GB/T 7714-2015 规范的参考文献样式
+\usepackage[style=gb7714-201,backend=bibtex]{biblatex}
+% 注意加 .bib 扩展名
+\addbibresource{egbibdata.bib}
+\begin{document}
+见文献\cite{caimin2006}。
+\printbibliography%插入参考文献
+\end{document}
+\end{verbatim}\par
+\subsection{中文文献的自定义导入}
 对于中文文献，可以使用\verb|gbt7714|宏包来生成满足我国标准的参考文献格式:
 \begin{verbatim}
 \documentclass{ctexart}
@@ -117,8 +130,9 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 \bibliography{bibfile}
 \end{document}
 \end{verbatim}\par
-按照国标的规定，参考文献的标注体系分为“顺序编码制”和“著者-出版年制”。用
-户应在导言区调用宏包 gbt7714，并且使用 \verb|\bibliographystyle| 命令选择参考文献
+这种宏包导入有一个比较麻烦的是作者在参考文献中出现的位置问题，经测试该库不会自动按照bib文件中作者的顺序排列，在多位作者同时完成一篇文章时排序混乱，官方文档提供了一种解决方案，但是比较麻烦，推荐使用\verb|biblatex|宏包。\verb|gbt7714|宏包的好处是它对中文文献的引用格式和参考文献的样式有比较好的支持。
+
+按照国标的规定，参考文献的标注体系分为“顺序编码制”和“著者-出版年制”。用户应在导言区调用宏包 gbt7714，并且使用 \verb|\bibliographystyle| 命令选择参考文献
 表的样式，比如：
 \begin{verbatim}
 \bibliographystyle{gbt7714-numerical} %顺序编码制
@@ -134,7 +148,6 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
     \usepackage[sort&compress]{gbt7714}
   \end{verbatim}
 \end{itemize}
-
 \textbf{注意该宏包不要和cite宏包一同引入，会起冲突}。\par
 
 \LaTeX 中更为常用的一种导入参考文献的格式，其中\verb|unsrt|样式表示参考文献条目按照文章中出现顺序排列。
