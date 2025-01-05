@@ -1,14 +1,14 @@
 \documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页
 \usepackage{verbatim}
 \usepackage{url}
-\usepackage{graphicx}
 \usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage{listings}
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{longtable}
 \usepackage{threeparttable}
 \usepackage{cite}
-\usepackage{listings}
 \title{latex使用指南}
 \newcommand{\cnabstractname}{摘要}
 \newenvironment{cnabstract}{%
@@ -48,21 +48,21 @@ latex插入pdf时的两种常用方法及其优缺点表述如下:
 \begin{figure}[H]%H定义浮动体位置,Here
   \small
   \centering
-  \includegraphics[width=\textwidth]{../asset/figure.eps}
+  \includegraphics[width=\textwidth]{./asset/figure.pdf}
   \caption{全国煤炭企业前50强产煤总量}\label{sum_production}
 \end{figure}
 \subsection{双栏排列}\label{双栏}
 在引入pdf或者图片时(insert graphics)，为节省页面空间，很多时候将两张图片进行双栏并排显示是一种不错的选择，这也就使用到了浮动体的双栏,这里给出一种比较简单的浮动体双栏排列的方法：
-% \usepackage{subcaption}浮动体双栏显示
+% \usepackage{subcaption}浮动体双栏显示ß
 \begin{figure}[H]
   \caption{两个图并排放置}\label{sub_cap}
   \centering
   \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../asset/figure.eps}
+    \includegraphics[width=\textwidth]{./asset/figure.pdf}
     \caption{题注1}
   \end{subfigure}
   \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{../asset/figure.eps}
+    \includegraphics[width=\textwidth]{./asset/figure.pdf}
     \caption{题注2}
   \end{subfigure}
 \end{figure}
@@ -94,9 +94,12 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 \end{enumerate}
 \subsubsection{长表格}
 长表格主要使用的是\verb|longtable|宏包的longtable环境，与tabular类似，不过多了一些处理跨页操作的命令。因为\verb|to_latex|函数可以直接导出这种样式的表格，所以在实际中使用这种表格的频率也比较高,想要导出这种环境的表格时，只需在开始提到的模板中加入\verb|longtable=True|的参数即可获得，使用比较方便\footnote{longtable的表格宽度是根据表格内容调整的，当表格属于长而窄的类型时美观度比较有限，这时可以考虑利用python的concat函数对长表格进行拆分和列拼接}。\par
+
+\textbf{注意}：长表格不支持\verb|resizebox{h-length}{v-length}{text}|命令来自适应调节表格的宽度，遇到表格宽度过大的情况，推荐适当缩小表格字体（ 在表格外添加\verb|\footnotesize| 命令 ） 或者对表格的结构进行调整。
 {
   \input{./tex代码/long_table.tex}
 }
+
 \subsubsection{定宽表格}
 刘海洋老师的书里有写到，可以去翻翻。用的是\verb|tabularx|环境。
 考虑到这种环境不能使用Python的\verb|to_latex|直接导出，更推荐的一种做法是在python中将表格进行调整之后再导出。
