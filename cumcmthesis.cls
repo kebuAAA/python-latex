@@ -16,6 +16,8 @@
 \newcommand*\mcm@tokens@supervisor{}
 \newcommand*\mcm@tokens@yearinput{}
 \newcommand*\mcm@tokens@monthinput{}
+\usepackage{multicol}
+
 \newcommand*\mcm@tokens@dayinput{}
 %%%% 编号专用页
 % 没有

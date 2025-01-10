@@ -1,20 +1,24 @@
-\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页
+\documentclass[withoutpreface,bwprint]{../cumcmthesis} %去掉封面与编号页
 \usepackage{verbatim}
 \usepackage{url}
 \usepackage{pdfpages}
 \usepackage{graphicx}
 \usepackage{listings}
-\usepackage{subcaption}
+\usepackage{subcaption}%插入子图
+% \usepackage{subfig}
 \usepackage{float}
-\usepackage{longtable}
+\usepackage{longtable,tabularx}
+\usepackage{ltablex}
+\keepXColumns
 \usepackage{threeparttable}
-\usepackage{cite}
+\usepackage{cite,bookmark}
 \title{latex使用指南}
 \newcommand{\cnabstractname}{摘要}
 \newenvironment{cnabstract}{%
   \par\small
 %   \noindent\mbox{}\hfill{\bfseries \cnabstractname}\hfill\mbox{}\par
   \vskip 2.5ex}{\par\vskip 2.5ex}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \begin{document}
 \maketitle
@@ -51,21 +55,19 @@ latex插入pdf时的两种常用方法及其优缺点表述如下:
   \includegraphics[width=\textwidth]{./asset/figure.pdf}
   \caption{全国煤炭企业前50强产煤总量}\label{sum_production}
 \end{figure}
-\subsection{双栏排列}\label{双栏}
+\subsubsection{图片/pdf并列排版}\label{双栏}
 在引入pdf或者图片时(insert graphics)，为节省页面空间，很多时候将两张图片进行双栏并排显示是一种不错的选择，这也就使用到了浮动体的双栏,这里给出一种比较简单的浮动体双栏排列的方法：
-% \usepackage{subcaption}浮动体双栏显示ß
-\begin{figure}[H]
-  \caption{两个图并排放置}\label{sub_cap}
-  \centering
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{./asset/figure.pdf}
-    \caption{题注1}
-  \end{subfigure}
-  \begin{subfigure}{0.45\textwidth}
-    \includegraphics[width=\textwidth]{./asset/figure.pdf}
-    \caption{题注2}
-  \end{subfigure}
-\end{figure}
+\lstinputlisting[language=tex]{./tex代码/picture_typest/two_pics_parral_subcaption.tex}
+排版效果见图 \ref{sub_cap}，
+{
+  \input{./tex代码/picture_typest/two_pics_parral_subcaption.tex}
+}
+
+除此以外还有一种解决方案是使用\verb|subfigure|，二者的区别可能主要在于三四个子图排列的便捷性上，我不使用这个功能所以也没细致研究，这里给出一个\verb|subfigure|的例子，貌似二者会有冲突，随便用哪种方法好了。
+\lstinputlisting[language=tex]{./tex代码/picture_typest/two_pics_subfig.tex}
+% 排版效果见图 %\ref{sub_fig}，
+% {\input{./tex代码/picture_typest/two_pics_subfig.tex}
+% }
 \subsection{插入表格}
 一般来插入的表格都可以通过python的\verb|DataFrame.to_latex()|函数来导出到指定位置，然后通过\verb|input|命令导入使用，经常会用到的导出模板为:
 \begin{lstlisting}[language=python]
@@ -75,12 +77,13 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
 \begin{itemize}
   \item 列名如果有数学公式的话导出会加转义符，这样在latex编译后不能正常显示。可以设置\verb|escape=False|解决这个问题，不过这样设置数值中的转义符号也会被取消掉，这点在对于数值列中含有"\%"的数据中需要注意
   \item 不想显示index列或者列名列可以通过调节\verb|index|和\verb|header|参数进行修改
+  \item 修改表格中数字位数可以通过\verb|float_format|参数进行修改，一个例子是"\%.2f"。
 \end{itemize}
 
 插入表格的情况，相对复杂，可能出现的问题包括引入的表格过宽和过长的问题。
 一个简单的例子如表\ref{tab:table1}:
 {\input{tex代码/table.tex}}
-\subsubsection{宽表格}
+\subsubsection{宽表的缩窄（tabular）}
 针对插入表格\textbf{过宽}的情况
 \begin{enumerate}
   \item 一般选择使用\verb|graphicx|宏包提供的\verb|\resizebox{h-length%l}{v-length%l}{text}|命令来解决。这里给一个示例，语法如表\ref{cr8table}所示（代码在\verb|tex代码|文件夹的\verb|widetable|里边。
@@ -92,17 +95,23 @@ df.to_latex('./排版/tex代码/cr8.tex',caption='（$CR_8$）计算结果',labe
         \input{./tex代码/little_wide_table}
         }
 \end{enumerate}
-\subsubsection{长表格}
-长表格主要使用的是\verb|longtable|宏包的longtable环境，与tabular类似，不过多了一些处理跨页操作的命令。因为\verb|to_latex|函数可以直接导出这种样式的表格，所以在实际中使用这种表格的频率也比较高,想要导出这种环境的表格时，只需在开始提到的模板中加入\verb|longtable=True|的参数即可获得，使用比较方便\footnote{longtable的表格宽度是根据表格内容调整的，当表格属于长而窄的类型时美观度比较有限，这时可以考虑利用python的concat函数对长表格进行拆分和列拼接}。\par
 
-\textbf{注意}：长表格不支持\verb|resizebox{h-length}{v-length}{text}|命令来自适应调节表格的宽度，遇到表格宽度过大的情况，推荐适当缩小表格字体（ 在表格外添加\verb|\footnotesize| 命令 ） 或者对表格的结构进行调整。
+\subsubsection{窄表的定宽处理（tabularx）}
+刘海洋老师的书里有写到，可以去翻翻。用的是\verb|tabularx|环境，自己定义了一种新的列格式\footnote{自适应调整列，默认向左对齐，可以自己定义一个居中的列形式，具体见表源码}(X)，因为是起于\verb|tabular|所以相对来说比较好用。效果大概是下边这样：
+\input{tex代码/fix-width_table.tex}
+
+这种环境不能使用Python的\verb|to_latex|直接导出，
+
+\subsubsection{长表格}
+\textbf{python函数原生支持的方法，主要问题是如果是一个窄表调成定宽比较麻烦}：
+长表格主要使用的是\verb|longtable|宏包的longtable环境（使用说明可以看刘海洋的教程），与tabular类似，不过多了一些处理跨页操作的命令。因为\verb|to_latex|函数可以直接导出这种样式的表格，所以在实际中使用这种表格的频率也比较高,想要导出这种环境的表格时，只需在开始提到的模板中加入\verb|longtable=True|的参数即可获得，使用比较方便\footnote{longtable的表格宽度是根据表格内容调整的，当表格属于长而窄的类型时美观度比较有限，这时可以考虑利用python的concat函数对长表格进行拆分和列拼接}。\par
+\textbf{注意}：长表格不支持\verb|resizebox{h-length}{v-length}{text}|命令来自适应调节表格的宽度，遇到表格宽度过大的情况，推荐适当缩小表格字体（ 在表格外添加 \verb|\footnotesize|  命令 ） 或者对表格的结构进行调整，具体效果如表 \ref{num_var_desc}所示。\par
+
 {
   \input{./tex代码/long_table.tex}
 }
 
-\subsubsection{定宽表格}
-刘海洋老师的书里有写到，可以去翻翻。用的是\verb|tabularx|环境。
-考虑到这种环境不能使用Python的\verb|to_latex|直接导出，更推荐的一种做法是在python中将表格进行调整之后再导出。
+\textbf{长窄表调成定宽}：这时无法沿用resizebox的思路，主要是因为longtable环境和tabular环境不兼容，一个新的解决方案是使用\verb|ltablex|宏包，这个宏包是对\verb|longtable|和\verb|tabularx|的结合，可以实现长表格的定宽，它使用longtable环境定义长表的语法同时支持tabularx环境的列格式定义，具体可以看long\_table.tex文件，记得在导言区添加\verb|\usepackage{ltablex}|命令和\verb|\keepXColumns|命令。
 
 \section{插入题注}
 这是一个题注\footnote{使用比较简单，这里不再赘述}。
@@ -187,6 +196,6 @@ summary(model)
 \end{lstlisting}
   \subsection{input方法}
   更为简洁的一种导入方法
-  \lstinputlisting[language=python]{./test.py}
+  \lstinputlisting[language=python]{./asset/test.py}
 \end{appendices}
 \end{document}
